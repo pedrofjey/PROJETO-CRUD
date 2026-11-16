@@ -1,1 +1,1 @@
-from .screens import tela_cursos, tela_alunos, tela_configuracoes, tela_matriculas, tela_inicio
+from .screens import tela_cursos, tela_alunos, tela_configuracoes, tela_matriculas

@@ -6,8 +6,6 @@ def main(page: ft.Page):
     page.window.maximizable = True
     page.theme_mode = ft.ThemeMode.SYSTEM
 
-    inicio = ft.NavigationDrawerDestination(label = "Início", icon= ft.Icons.HOME_OUTLINED,selected_icon = ft.Icons.HOME)
-
     cursos = ft.NavigationDrawerDestination(label = "Cursos", icon = ft.Icons.BOOK_OUTLINED,selected_icon = ft.Icons.BOOK)
 
     matriculas = ft.NavigationDrawerDestination(label = "Matriculas", icon = ft.Icons.CALENDAR_MONTH_OUTLINED,selected_icon = ft.Icons.CALENDAR_MONTH)
@@ -16,11 +14,10 @@ def main(page: ft.Page):
 
     configuracoes = ft.NavigationDrawerDestination(label = "Configurações", icon = ft.Icons.SETTINGS_OUTLINED,selected_icon = ft.Icons.SETTINGS)
 
-    telas = {0: vi.tela_inicio(),
-            1: vi.tela_cursos(),
-            2: vi.tela_matriculas(),
-            3: vi.tela_alunos(),
-            4: vi.tela_configuracoes()
+    telas = {0: vi.tela_cursos(),
+            1: vi.tela_matriculas(),
+            2: vi.tela_alunos(),
+            3: vi.tela_configuracoes()
     }
 
     conteudo = ft.Container(content= telas[0],
@@ -30,7 +27,7 @@ def main(page: ft.Page):
         conteudo.content = telas[e.control.selected_index]
         page.update()
             
-    menu = ft.NavigationDrawer(controls = [ft.Text("LINGUINET", size = 30, align= ft.Alignment.CENTER), inicio, cursos, matriculas, alunos, configuracoes],
+    menu = ft.NavigationDrawer(controls = [ft.Text("LINGUINET", size = 30, align= ft.Alignment.CENTER), cursos, matriculas, alunos, configuracoes],
                                 selected_index = 0,
                                 width = 240,
                                 expand = False,
