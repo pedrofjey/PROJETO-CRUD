@@ -4,7 +4,7 @@ import views as vi
 def main(page: ft.Page):
     page.title = "Linguinet - Cursos de Idiomas"
     page.window.maximizable = True
-    page.theme_mode = ft.ThemeMode.SYSTEM
+    page.theme_mode = ft.ThemeMode.DARK
 
     cursos = ft.NavigationDrawerDestination(label = "Cursos", icon = ft.Icons.BOOK_OUTLINED,selected_icon = ft.Icons.BOOK)
 
@@ -14,7 +14,7 @@ def main(page: ft.Page):
 
     configuracoes = ft.NavigationDrawerDestination(label = "Configurações", icon = ft.Icons.SETTINGS_OUTLINED,selected_icon = ft.Icons.SETTINGS)
 
-    telas = {0: vi.tela_cursos(),
+    telas = {0: vi.tela_cursos(page),
             1: vi.tela_matriculas(),
             2: vi.tela_alunos(),
             3: vi.tela_configuracoes()
