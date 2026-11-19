@@ -41,3 +41,21 @@ def cadastrar_curso(idioma, nivel, carga_horaria, preco):
         return "sucesso"
     else:
         return "duplicado"
+
+def editar_curso(id_curso, nova_carga_horaria, novo_preco):
+    for item in cursos:
+        if item["id"] == id_curso:
+            try:
+                carga_horaria = int(nova_carga_horaria)
+            except ValueError:
+                return "carga_invalida"
+            if carga_horaria <= 0:
+                return "carga_invalida"
+            
+            try:
+                preco = float(preco)
+            except ValueError:
+                return "preco_invalido"
+                 
+            if preco <= 0 or round(preco, 2) != preco:
+                return "preco_invalido"

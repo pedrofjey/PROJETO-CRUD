@@ -31,7 +31,7 @@ def main(page: ft.Page):
                                 selected_index = 0,
                                 width = 240,
                                 expand = False,
-                                indicator_color= "#de8123",
+                                indicator_color= "#d4642c",
                                 bgcolor = "#001649",
                                 on_change= mudanca_de_tela)
 

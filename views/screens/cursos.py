@@ -30,7 +30,7 @@ def tela_cursos(page):
         campo_preco = ft.TextField(label = "Preço",
                                    hint_text= "Ex.: 150.00")
 
-        mensagem = ft.Text("", color = "red", size = 12)
+        mensagem = ft.Text("", color = "red", size = 20)
 
         def cancelar(e):
             page.pop_dialog()
@@ -42,27 +42,28 @@ def tela_cursos(page):
             preco = campo_preco.value
 
             if not idioma or not nivel or not carga or not preco:
-                print("Preencha todos os dados!")
+                mensagem.value = "Preencha todos os dados!"
+                mensagem.color = "yellow"
                 return 
             
             rerultado = cadastrar_curso(idioma, nivel, carga, preco)
 
             if rerultado == "sucesso":
-                print("Curso cadastrado!")
+                mensagem.value = "Curso cadastrado!"
+                mensagem.color = "green"
                 atualizar_cards()
                 page.pop_dialog()
                 page.update()
             elif rerultado == "duplicado":
-                print("Esse curso já existe!")
+                mensagem.value = "Esse curso já existe!"
             elif rerultado == "carga_invalida":
-                print("A carga horária deve ser um número inteiro positivo!")
+                mensagem. value = "Carga horária invalida!"
             elif rerultado == "preco_invalido":
-                print("O preço deve ser positivo e ter duas casas decimais!")
+                mensagem.value = "Preço invalido!"
         
         formulario = ft.AlertDialog(title = "Novo Curso",
                                     scrollable= True,
-                                    bgcolor= "#de8123",
-                                    content = ft.Column(controls = [campo_idioma, campo_nivel, campo_carga_horaria, campo_preco, mensagem
+                                    content = ft.Column(controls = [campo_idioma, campo_nivel, campo_carga_horaria, campo_preco, mensagem,
                                                                     ft.Row(controls = [ft.Button(content= "Cancelar",
                                                                                                  on_click= cancelar),
                                                                                         ft.Button(content="Salvar",
