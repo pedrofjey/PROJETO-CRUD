@@ -1,4 +1,4 @@
+#Importa as telas para que possam ser utilizadas nas outras pastas/arquivos
 from .cursos import tela_cursos
 from.alunos import tela_alunos
-from .configuracoes import tela_configuracoes
 from .matriculas import tela_matriculas

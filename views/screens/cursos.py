@@ -1,19 +1,25 @@
 import flet as ft
-from ..components import (secao_do_titulo, card_idioma, criar_botao)
+from ..components import (secao_do_titulo, card_idioma, criar_botao, criar_formulario)
 from models.cursos import (cursos, cadastrar_curso)
 
+#Cria a tela cursos
 def tela_cursos(page):
     titulo_e_descricao = secao_do_titulo("Cursos", "Escolha um idioma para ver os cursos disponíveis")
 
     lista_cards = ft.Column()
 
-
+    #Atualiza os cards da pagina
     def atualizar_cards():
-        lista_cards.controls = [card_idioma("Inglês"), card_idioma("Espanhol"), card_idioma("Francês")]
-
+        lista_cards.controls = [card_idioma("Inglês", page, atualizar_cards),
+                                card_idioma("Espanhol",page, atualizar_cards),
+                                card_idioma("Francês", page, atualizar_cards)]
+    #Já começa atualizada com os cards
     atualizar_cards()
 
-    def abrir_formulario(e):
+    #Abre o formulario de cadastro de curso
+    def formulario_cadastrar(e):
+
+        #Campos do formulario
         campo_idioma = ft.Dropdown(label= "Selecione um idioma",
                                    options=[ft.DropdownOption("Inglês"),
                                             ft.DropdownOption("Espanhol"),
@@ -32,48 +38,53 @@ def tela_cursos(page):
 
         mensagem = ft.Text("", color = "red", size = 20)
 
-        def cancelar(e):
-            page.pop_dialog()
+        #Lista com os campos do cadastro
+        campos = [campo_idioma, campo_nivel, campo_carga_horaria, campo_preco]
 
-        def salvar(e):
+        #Cadastra o curso e atualiza os cards
+        def salvar():
             idioma = campo_idioma.value
             nivel = campo_nivel.value
             carga = campo_carga_horaria.value
             preco = campo_preco.value
 
+            #Verifica se todos os campos foram preenchidos
             if not idioma or not nivel or not carga or not preco:
                 mensagem.value = "Preencha todos os dados!"
                 mensagem.color = "yellow"
                 return 
-            
+
+            #Chama a função para cadastrar o curso
             rerultado = cadastrar_curso(idioma, nivel, carga, preco)
 
+            #Atualiza os cursos caso seja cadastrado
             if rerultado == "sucesso":
                 mensagem.value = "Curso cadastrado!"
                 mensagem.color = "green"
                 atualizar_cards()
                 page.pop_dialog()
                 page.update()
+            #Verifica se o curso ja existe
             elif rerultado == "duplicado":
                 mensagem.value = "Esse curso já existe!"
+            #Verifica se a carga é valida
             elif rerultado == "carga_invalida":
                 mensagem. value = "Carga horária invalida!"
+            #Verifica se o preço é valido
             elif rerultado == "preco_invalido":
                 mensagem.value = "Preço invalido!"
         
-        formulario = ft.AlertDialog(title = "Novo Curso",
-                                    scrollable= True,
-                                    content = ft.Column(controls = [campo_idioma, campo_nivel, campo_carga_horaria, campo_preco, mensagem,
-                                                                    ft.Row(controls = [ft.Button(content= "Cancelar",
-                                                                                                 on_click= cancelar),
-                                                                                        ft.Button(content="Salvar",
-                                                                                                  on_click= salvar)],
-                                                                                        alignment= ft.MainAxisAlignment.END)]))
+        #Cria o formulario de cadastro
+        formulario = criar_formulario("Cadastrar curso", campos, mensagem, salvar, page)
+
+        #Abre o formulario
         page.show_dialog(formulario)
 
-    linha_titulo_addCurso = ft.Row(controls= [titulo_e_descricao, criar_botao("+ adicionar curso", abrir_formulario)],
+    #Cria a linha com o titulo e o botão de cadastrar curso
+    linha_titulo_addCurso = ft.Row(controls= [titulo_e_descricao, criar_botao("+ adicionar curso", formulario_cadastrar)],
                                    alignment= ft.MainAxisAlignment.SPACE_BETWEEN)
     
+    #tela completa
     tela = ft.Container(content = ft.Column(controls = [linha_titulo_addCurso, lista_cards]),
                         expand = True)
     return tela
