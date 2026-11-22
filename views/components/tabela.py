@@ -9,7 +9,7 @@ def criar_tabela(colunas,linhas):
                           heading_text_style=ft.TextStyle(color= "white",
                                                           size = 16,
                                                           weight=ft.FontWeight.BOLD),
-                          data_text_style=ft.TextStyle(color="white",
+                          data_text_style=ft.TextStyle(color= "white",
                                                        size = 16),
                           border= ft.Border.all(1, "#334155"),
                           border_radius= 12,

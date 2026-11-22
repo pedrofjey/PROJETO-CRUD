@@ -1,8 +1,14 @@
 #Lsta de alunos cadastrados
 alunos = [{"id": 1,
-           "nome": "Pedro Henrique",
-           "cpf": "168.488.224.93",
-           "email": "pehh3435@gmail.com",
+           "nome": "Liam Silva",
+           "cpf": "168.488.224-93",
+           "email": "liam@gmail.com",
+           "idade": "16"
+           },
+           {"id": 2,
+           "nome": "Rebeca",
+           "cpf": "067.649.014-06",
+           "email": "rebeca123@gmail.com",
            "idade": "15"
            }]
 
@@ -52,14 +58,20 @@ def validacao_cpf(cpf):
 
     return True
 
-#Procura o aluno pelo id e exclui
-def excluir_aluno(id_aluno):
+#Exclui o aluno
+def excluir_aluno(id_aluno, matriculas):
+    #Verifica se o aluno possui matricula ativa
+    for item in matriculas:
+        if item["id_aluno"] == id_aluno and item["status"] == "Ativa":
+            return "matricula ativa"
+
+    #Procura pelo id e exclui o aluno
     for aluno in alunos:
         if aluno["id"] == id_aluno:
             alunos.remove(aluno)
             return "sucesso"
-    else:
-        return "falha"
+    
+    return "falha"
 
 #Edita os dados do aluno
 def editar_aluno(id_aluno, novo_nome, novo_cpf, novo_email, nova_idade):

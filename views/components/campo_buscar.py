@@ -1,7 +1,7 @@
 import flet as ft
 
 #Cria o campo de pesquisa de alunos
-def campo_buscar_aluno(on_change):
+def campo_buscar(on_change):
 
     #Campo de pesquisa
     campo = ft.TextField(hint_text="Buscar por nome...",

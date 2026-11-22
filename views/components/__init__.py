@@ -2,6 +2,6 @@
 from .titulo_secao import secao_do_titulo
 from .card_idioma import card_idioma
 from .botao import criar_botao
-from .campo_buscar import campo_buscar_aluno
+from .campo_buscar import campo_buscar
 from .tabela import criar_tabela
 from .formulario import criar_formulario

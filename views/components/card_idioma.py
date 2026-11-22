@@ -1,6 +1,6 @@
-
 import flet as ft
 from models.cursos import (cursos, editar_curso, excluir_curso)
+from models.matriculas import matriculas
 
 #Cria o card com os niveis de cada idioma
 def card_idioma(nome, page, atualizar_cards):
@@ -65,25 +65,35 @@ def card_idioma(nome, page, atualizar_cards):
 
     #Mostra um formulario para confirmação de exclusão do curso
     def formulario_excluir(nivel):
+
+        mensagem = ft.Text("", size = 20, color = "red")
         #Fecha o formulario
         def cancelar():
             page.pop_dialog()
 
         #Exclui o curso
         def excluir():
-            excluir_curso(nivel)
-            atualizar_cards()
-            page.pop_dialog()
+
+            resultado = excluir_curso(nivel, matriculas)
+
+            if resultado == "sucesso":
+                atualizar_cards()
+                page.pop_dialog()
+
+            elif resultado == "matricula ativa":
+                mensagem.value = "Não é possível excluir: existe uma matrícula ativa nesse curso."
+
             page.update()
 
         #formulario
         formulario = ft.AlertDialog(title = "Deseja mesmo excluir o curso?",
                                             scrollable= True,
-                                            content = ft.Row(controls = [ft.Button(content= "Cancelar",
-                                                                                   on_click= cancelar),
-                                                                         ft.Button(content="Excluir",
-                                                                                   on_click= excluir)],
-                                                             alignment= ft.MainAxisAlignment.END))
+                                            content = ft.Column(controls = [mensagem,
+                                                                ft.Row(controls = [ft.Button(content= "Cancelar",
+                                                                       on_click= cancelar),
+                                                                       ft.Button(content="Excluir",
+                                                                                 on_click= excluir)],
+                                                             alignment= ft.MainAxisAlignment.END)]))
         page.show_dialog(formulario)
 
     #Cria a as linhas contendo as informações de cada nivel
@@ -98,7 +108,7 @@ def card_idioma(nome, page, atualizar_cards):
                         ft.IconButton(icon = ft.Icons.DELETE,
                                       icon_color= "red",
                                       tooltip= "Excluir curso",
-                                      on_click= lambda e: formulario_excluir(nivel["id"]))])],
+                                      on_click= lambda e, id_curso=nivel["id"]: formulario_excluir(id_curso))])],
                         alignment= ft.MainAxisAlignment.SPACE_BETWEEN)
         #Adiciona a lista
         controles_niveis.append(linha)

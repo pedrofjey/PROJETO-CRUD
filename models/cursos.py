@@ -2,7 +2,19 @@
 cursos = [{"id": 1,
           "idioma": "Inglês",
           "nivel": "Básico",
+          "carga_horaria": 20,
+          "preco": 120.00
+          },
+          {"id": 2,
+          "idioma": "Inglês",
+          "nivel": "Intermediário",
           "carga_horaria": 40,
+          "preco": 140.00
+          },
+          {"id": 3,
+          "idioma": "Inglês",
+          "nivel": "Avançado",
+          "carga_horaria": 50,
           "preco": 150.00
           }]
 
@@ -78,7 +90,13 @@ def editar_curso(id_curso, nova_carga_horaria, novo_preco):
             return "sucesso"
 
 #Verifica qual é o curso e exclui
-def excluir_curso(id_curso):
+def excluir_curso(id_curso, matriculas):
+    #Verifica se existe matricula ativa neste curso
+    for item in matriculas:
+        if item["id_curso"] == id_curso and item["status"] == "Ativa":
+            return "matricula ativa"
+        
+    #Exclui o curso
     for item in cursos:
         if item["id"] == id_curso:
             cursos.remove(item)

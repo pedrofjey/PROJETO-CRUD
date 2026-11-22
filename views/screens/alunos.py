@@ -1,6 +1,7 @@
 import flet as ft
-from ..components import (secao_do_titulo, campo_buscar_aluno,criar_botao, criar_tabela, criar_formulario)
+from ..components import (secao_do_titulo, campo_buscar, criar_botao, criar_tabela, criar_formulario)
 from models.alunos import (alunos, excluir_aluno, editar_aluno, cadastrar_aluno)
+from models.matriculas import matriculas
 
 #Cria a tela alunos
 def tela_alunos(page):
@@ -15,7 +16,7 @@ def tela_alunos(page):
         atualizar_tabela()
 
     #campo de pesquisa do aluno
-    campo_pesquisa = campo_buscar_aluno(buscar_aluno)
+    campo_pesquisa = campo_buscar(buscar_aluno)
     
     #Adiciona o titulo, botão cadastrar e campo de pesquisa em uma linha
     linha_titulo_buscar = ft.Row(controls=[titulo_descricao,
@@ -93,9 +94,23 @@ def tela_alunos(page):
 
         #Exclui o aluno e atualiza a tabela
         def confirmacao_excluir(id_aluno):
-            excluir_aluno(id_aluno)
-            atualizar_tabela()
-            page.pop_dialog()
+            
+            resultado = excluir_aluno(id_aluno, matriculas)
+
+            if resultado == "sucesso":
+                page.pop_dialog()
+                atualizar_tabela()
+
+            elif resultado == "matricula ativa":
+                mensagem = ft.AlertDialog(title = "Exclusão não permitida",
+                                          content = ft.Text("Não é possível excluir um aluno que possui matrícula ativa."),
+                                          actions = [ft.TextButton("Entendi",
+                                                                   on_click = lambda e: page.pop_dialog())])
+
+                page.show_dialog(mensagem)
+
+            else:
+                page.pop_dialog()
 
         #Cria o formulario
         formulario = ft.AlertDialog(title = "Deseja mesmo excluir o aluno?",
